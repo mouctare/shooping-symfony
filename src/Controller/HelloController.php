@@ -17,10 +17,19 @@ class HelloController
     /**
     *@Route("/hello/{prenom}", name="hello")
      */
-    public function hello($prenom = "world"){ 
+    public function hello($prenom = "world", Environment $twig){ 
        
-        
-        return new Response("Bonjour $prenom");
+        $html = $twig->render('hello.html.twig', [
+            'prenom' => $prenom,
+            'age' => 3,
+            'prenoms' =>[
+                'Lior',
+                'Elise',
+                'Magali',
+                'Toto'
+            ]
+        ]);
+        return new Response($html);
 
     }
 }

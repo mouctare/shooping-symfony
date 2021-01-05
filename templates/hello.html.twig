@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<title>Titre de la page</title>
+		<link rel="stylesheet" href="style.css">
+		<script src="script.js"></script>
+	</head>
+	<body>
+		<h1>Hello word
+			{{prenom}}</h1>
+		<p>Vous avez
+			{{age}}
+			ans
+		</p>
+		{% if age >= 18 %}
+			Vous etes un adulte
+		{% else %}
+			Vous etes un enfant
+		{% endif %}
+		<ul>
+			{% for personne in prenoms %}
+				<li>
+					{{personne | upper}}</li>
+			{% endfor %}
+
+		</ul>
+		<ul>
+			{% for i in 1..10%}
+				<li>Numéro
+					{{i}}</li>
+			{% endfor %}
+
+		</ul>
+	</body>
+</html>
