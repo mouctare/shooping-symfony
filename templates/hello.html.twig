@@ -9,28 +9,15 @@
 	<body>
 		<h1>Hello word
 			{{prenom}}</h1>
-		<p>Vous avez
-			{{age}}
+		<p>
+			Mon formateur s'appelle
+			<strong>{{formateur.prenom}}
+			</strong>
+			{{formateur.nom}}
+			et il a
+			{{formateur.age}}
 			ans
 		</p>
-		{% if age >= 18 %}
-			Vous etes un adulte
-		{% else %}
-			Vous etes un enfant
-		{% endif %}
-		<ul>
-			{% for personne in prenoms %}
-				<li>
-					{{personne | upper}}</li>
-			{% endfor %}
 
-		</ul>
-		<ul>
-			{% for i in 1..10%}
-				<li>Numéro
-					{{i}}</li>
-			{% endfor %}
-
-		</ul>
 	</body>
 </html>

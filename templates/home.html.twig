@@ -1,0 +1,65 @@
+{% extends "base.html.twig" %}
+
+
+{% block title %}
+	Accueil
+{% endblock %}
+
+{% block body %}
+
+	<h1>Nos produits phares</h1>
+	<div class="row">
+
+		{% for p in products %}
+			<div class="col">
+				<div class="card">
+					<img src="{{ p.mainPicture}}" class="img-fluid" alt="image du produit">
+					<div class="card-body">
+						<h4 class="card-title">{{ p.name}}({{ p.price / 100}}
+							&euro;)</h4>
+						<span class="badge badge-info">
+
+							{{ p.category.name}}
+						</span>
+						<p class="card-text">
+							{{ p.shortDescription}}
+						</p>
+						<a href="{{ path('product_category', { 'category_slug': p.category.slug, 'slug': p.slug}) }}" class="btn btn-primary btn-sm">Détails</a>
+						<a href="#" class="btn btn-success btn-sm">Ajouter</a>
+
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	<hr>
+	<h2>Un service irreprochable</h2>
+	<p>
+		e lorem ipsum (également appelé faux-texte, lipsum, ou bolo bolo) est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour ...
+	</p>
+	<div class="row">
+		{% include "shared/_assurance.html.twig"  with {
+			'color': 'primary',
+			'icone': 'fas fa-truck',
+			'text': "Lorem Ipsum est un générateur de faux textes aléatoires. 
+			Vous choisissez le nombre de paragraphes, de mots ou de listes. Vous obtenez alors un texte aléatoire que vous pourrez ensuite utiliser librement dans vos maquettes."
+		}%}
+
+
+		{% include "shared/_assurance.html.twig"  with {
+			'color': 'success',
+			'icone': 'fas fa-check',
+			'text': "Lorem Ipsum est un générateur de faux textes aléatoires. 
+			Vous choisissez le nombre de paragraphes, de mots ou de listes. Vous obtenez alors un texte aléatoire que vous pourrez ensuite utiliser librement dans vos maquettes."
+		}%}
+
+
+		{% include "shared/_assurance.html.twig"  with {
+			'color': 'warning',
+			'icone': 'fas fa-lock',
+			'text': "Lorem Ipsum est un générateur de faux textes aléatoires. 
+			Vous choisissez le nombre de paragraphes, de mots ou de listes. Vous obtenez alors un texte aléatoire que vous pourrez ensuite utiliser librement dans vos maquettes."
+		}%}
+
+	</div>
+{% endblock %}
