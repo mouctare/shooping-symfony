@@ -69,6 +69,7 @@ class ProductController  extends AbstractController
      $form->handleRequest($request);
     if ($form->isSubmitted()) {
     // $product = $form->getData(); pas besoin puisquon a passé lobjet produc a la request
+    dd($form->getData());
        $em->flush();
 
     return $this->redirectToRoute('product_show', [
