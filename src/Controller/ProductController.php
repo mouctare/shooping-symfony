@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +18,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ProductController  extends AbstractController
 {
     /**
-     * @Route("/{slug}", name="product_category")
+     * @Route("/{slug}", name="product_category", priority=-1)
      */
     public function category($slug, CategoryRepository $categoryRepository)
     {
@@ -62,14 +63,14 @@ class ProductController  extends AbstractController
 /**
  * @Route("/admin/product/{id}/edit",  name="product_edit")
  */
-  public function edit($id, ProductRepository $productRepository, Request $request,  EntityManagerInterface $em){
+  public function edit($id, ProductRepository $productRepository, Request $request,  EntityManagerInterface $em, Security $security){
      $product = $productRepository->find($id);
 
      $form = $this->createForm(ProductType::class, $product); // $form->setData($product);
      $form->handleRequest($request);
-    if ($form->isSubmitted()) {
+    if ($form->isSubmitted()&& $form->isValid()) {
     // $product = $form->getData(); pas besoin puisquon a passé lobjet produc a la request
-    dd($form->getData());
+   // dd($form->getData());
        $em->flush();
 
     return $this->redirectToRoute('product_show', [
@@ -104,7 +105,7 @@ class ProductController  extends AbstractController
 
         $form->handleRequest($request);
    
-       if ($form->isSubmitted()) {
+       if ($form->isSubmitted() && $form->isValid()) {
           // $product = $form->getData();
            $product->setSlug(strtolower($slugger->slug($product->getName())));
 

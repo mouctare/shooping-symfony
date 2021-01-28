@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes
+{% endblock %}
+
+{% block body %}
+	<h1>Mes commandes</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Numéro</th>
+				<th>Address</th>
+				<th>Date de commande</th>
+				<th>Produit</th>
+				<th>Toal</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			{% for p in purchases %}
+				<tr>
+					<td>{{ p.id }}</td>
+					<td>{{ p.address }}<br>{{ p.postalCode }},
+						{{ p.city }}</td>
+					<td>{{ p.purchasedAt | date('d/m/y H:i') }}</td>
+					<td>
+						<ul>
+							{% for product in p.products %}
+								<li>{{ product.name }}
+									({{ product.price / 100 }}
+									€)</li>
+
+							{% endfor %}
+
+						</ul>
+					</td>
+					<td>{{ p.total / 100 }}
+						€
+					</td>
+
+
+				</tr>
+
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
