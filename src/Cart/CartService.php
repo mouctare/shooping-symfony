@@ -24,6 +24,10 @@ class CartService
 
     }
 
+    public function empty()  {
+        $this->saveCart([]);
+     
+         }
     protected function saveCart(array $cart)  {
       $this->session->set('cart', $cart);
    

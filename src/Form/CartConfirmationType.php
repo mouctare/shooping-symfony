@@ -46,7 +46,7 @@ class CartConfirmationType extends AbstractType
         $resolver->setDefaults([
             // Configure your form options here
             // Ici le formulaire donne à l'entité Purchase de facon rempli
-            'data_class' => Purchase::class
+            'data_class' =>  Purchase::class
         ]);
     }
 }
