@@ -100,6 +100,11 @@ class CartService
 
 
     }
+    /**
+     *
+     *
+     * @return CartItem[]
+     */
     public function getDetailedCartItems() :  array {
          // On crée un tableau vide pour créer le pannier
          $detailedCart = [];

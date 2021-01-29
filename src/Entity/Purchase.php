@@ -63,13 +63,19 @@ class Purchase
     private $purchasedAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="purchases")
+     * @ORM\OneToMany(targetEntity=PurchaseItem::class, mappedBy="purchase", orphanRemoval=true)
      */
-    private $products;
+    private $purchaseItems;
+
+   // 
+    //  @ORM\ManyToMany(targetEntity=Product::class, inversedBy="purchases")
+    // 
+   // private $products;
 
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->purchaseItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -174,26 +180,58 @@ class Purchase
     }
 
     /**
-     * @return Collection|Product[]
+     * @return Collection|PurchaseItem[]
      */
-    public function getProducts(): Collection
+    public function getPurchaseItems(): Collection
     {
-        return $this->products;
+        return $this->purchaseItems;
     }
 
-    public function addProduct(Product $product): self
+    public function addPurchaseItem(PurchaseItem $purchaseItem): self
     {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
+        if (!$this->purchaseItems->contains($purchaseItem)) {
+            $this->purchaseItems[] = $purchaseItem;
+            $purchaseItem->setPurchase($this);
         }
 
         return $this;
     }
 
-    public function removeProduct(Product $product): self
+    public function removePurchaseItem(PurchaseItem $purchaseItem): self
     {
-        $this->products->removeElement($product);
+        if ($this->purchaseItems->removeElement($purchaseItem)) {
+            // set the owning side to null (unless already changed)
+            if ($purchaseItem->getPurchase() === $this) {
+                $purchaseItem->setPurchase(null);
+            }
+        }
 
         return $this;
     }
+
 }
+
+//     /**
+//      * @return Collection|Product[]
+//      */
+//     public function getProducts(): Collection
+//     {
+//         return $this->products;
+//     }
+
+//     public function addProduct(Product $product): self
+//     {
+//         if (!$this->products->contains($product)) {
+//             $this->products[] = $product;
+//         }
+
+//         return $this;
+//     }
+
+//     public function removeProduct(Product $product): self
+//     {
+//         $this->products->removeElement($product);
+
+//         return $this;
+//     }
+// }

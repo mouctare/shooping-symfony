@@ -8,6 +8,7 @@ use App\Entity\Product;
 use Liior\Faker\Prices;
 use App\Entity\Category;
 use App\Entity\Purchase;
+use App\Entity\PurchaseItem;
 use Bluemmb\Faker\PicsumPhotosProvider;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -101,7 +102,15 @@ class AppFixtures extends Fixture
                    //Donc
                    foreach($selectedProducts as $product){
                      // Grace à la relation plusieurs à plusierus j'ai une methode addProduct
-                     $purchase->addProduct($product);
+                     $purchaseItem = new PurchaseItem;
+                     // Ici je crée une ligne de commande ou tiket de caise
+                     $purchaseItem->setProduct($product)
+                                  ->setQuantity(mt_rand(1, 3))
+                                  ->setProductName($product->getName())
+                                  ->setProductPrice($product->getPrice())
+                                  ->setTotal($purchaseItem->getProductPrice() * $purchaseItem->getQuantity())
+                                  ->setPurchase($purchase);
+                                  $manager->persist($purchaseItem);
                    }
                    if($faker->boolean(50)){
                      $purchase->setStatus(Purchase::STATUS_PAID);
