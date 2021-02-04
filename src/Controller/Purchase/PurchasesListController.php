@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Purchase;
 
-use App\Entity \User;
+use App\Entity\User;
 use Twig\Environment;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;

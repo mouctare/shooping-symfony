@@ -2,9 +2,11 @@
 namespace App\Controller\Purchase;
 
 use DateTime;
+use App\Entity\Purchase;
 use App\Cart\CartService;
 use App\Entity\PurchaseItem;
 use App\Form\CartConfirmationType;
+use App\Purchase\PurchasePersister;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -19,20 +21,18 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 class PurchaseConfirmationController extends AbstractController
 {
-   // protected  $formFactory;
-  //  protected  $router;
-  //  protected  $security;
+  
     protected  $cartService;
     protected  $em;
+    protected   $persister;
 
 
-    public function __construct(FormFactoryInterface $formFactory, RouterInterface $router, Security $security, CartService $cartService,  EntityManagerInterface $em)
+    public function __construct( CartService $cartService,  EntityManagerInterface $em,  PurchasePersister $persister)
     {
-       // $this->formFactory = $formFactory;
-       // $this->router = $router;
-       // $this->security = $security;
+    
         $this->cartService = $cartService;
         $this->em = $em;
+        $this->persister = $persister;
 
     }
     /**
@@ -60,7 +60,7 @@ class PurchaseConfirmationController extends AbstractController
      // 3. si je ne suis pas connecté : dégager (Security)
 
     //  $user = $this->security->getUser();
-    $user =  $this->getUser();
+    // $user =  $this->getUser(); c'est le isGranted qui le gère desormais
 
     // if(!$user){
       //  throw new AccessDeniedException("Vous devez étre connecté pour confirmez une commandes");
@@ -81,40 +81,16 @@ class PurchaseConfirmationController extends AbstractController
      * @var Purchase
      */
       $purchase = $form->getData(); // Ici on récupère les ,donnée du formulaire
-    
-   // 6. Nous allons la lier ave cle user actuellement connecté (Security)
-       $purchase->setUser($user)
-                ->setPurchasedAt(new DateTime())
-                ->setTotal($this->cartService->getTotal());
-                $this->em->persist($purchase);
+    $this->persister->storePurchase($purchase); // On stock la commande avec toutes les infos
+  
+  // $this->cartService->empty(); je ne vide plus le panierw
 
-   // 7. Nous allons la lier avec les produits qui sont dan le panier (CartService)
-
-
-   foreach($this->cartService->getDetailedCartItems() as $cartItem){
-       // Cette bouble permet de récupérer un achat du tableau de la function getDetailedCartItems du service cartService
-       $purchaseItem = new PurchaseItem;
-       $purchaseItem->setPurchase($purchase)
-        // C'est à dire que tu est une ligne de commande de cette commande qu'on de recuperer du formaulaire
-        ->setProduct($cartItem->product)
-        ->setProductName($cartItem->product->getName())
-        ->setQuantity($cartItem->qty)
-        ->setTotal($cartItem->getTotal())
-        ->setProductPrice($cartItem->product->getPrice());
-       // A chaque foi qu'on crée un achat on va incrémenter le total
-
-
-        $this->em->persist($purchaseItem);
-   }
-   
-   // 8. Nous allons enregistrer la commande (entityManger)
-   $this->em->flush();
-
-   $this->cartService->empty();
-
-   $this->addFlash('success', 'La commande a bien été enregistrée');
+  // $this->addFlash('success', 'La commande a bien été enregistrée');
   // return new RedirectResponse($this->router->generate('purchase_index'));
-  return $this->redirectToRoute('purchase_index');
+  return $this->redirectToRoute('purchase_payment_form', [
+    // Ici on redirige vers le formulaire de payement on appelle la route et on récupère l'id de la commande
+    'id' => $purchase->getId()
+  ]);
 
 
   }
