@@ -65,9 +65,9 @@ class AppFixtures extends Fixture
 
         for ($c = 0; $c < 3; $c++) {
             $category = new Category;
-            $category->setName("meuble")
-          ->setSlug(strtolower($this->slugger->slug($category->getName()
-        )));
+            $category->setName("meuble");
+          //->setSlug(strtolower($this->slugger->slug($category->getName()  )));
+      
             $manager->persist($category);
 
 
@@ -76,7 +76,8 @@ class AppFixtures extends Fixture
         
               $product->setName($faker->sentence())
               ->setPrice($faker->price(4000, 20000))
-             ->setSlug(strtolower($this->slugger->slug($product->getName())))
+            // ->setSlug(strtolower($this->slugger->slug($product->getName())))
+            // Cette opération a été remplacé par le linstener de doctrine
             ->setCategory($category)
               ->setShortDescription($faker->paragraph())
               ->setMainPicture($faker->imageUrl(400, 400, true));
