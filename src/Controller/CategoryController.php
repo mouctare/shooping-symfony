@@ -12,7 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class CategoryController extends AbstractController
@@ -29,7 +28,7 @@ class CategoryController extends AbstractController
        $categories = $this->categoryRepository->findAll();
 
        //2.Renvoyer le rendu HTML  sous la forme d'une Response ($this->render)
-       return $this->render('category/_menu.html.twig', [
+       return $this-render('category/_menu.html.twig', [
            'categories' => $categories
        ]);
    }

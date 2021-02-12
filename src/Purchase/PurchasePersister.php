@@ -30,11 +30,9 @@ class PurchasePersister
     public function storePurchase(Purchase $purchase)
     {
          // 6. Nous allons la lier ave cle user actuellement connecté (Security)
-         $purchase->setUser($this->security->getUser());
-        // ->setPurchasedAt(new DateTime())
-        // On a remplacé la date par les cyle de vie de doctrine
-        // ->setTotal($this->cartService->getTotal());
-        
+         $purchase->setUser($this->security->getUser())
+         ->setPurchasedAt(new DateTime())
+         ->setTotal($this->cartService->getTotal());
          $this->em->persist($purchase);
 
 // 7. Nous allons la lier avec les produits qui sont dan le panier (CartService)

@@ -1,1 +1,0 @@
-web: heroku-php-appche2 public/
