@@ -18,7 +18,7 @@ class RegisterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstname', TextType::class, [
+            ->add('fullName', TextType::class, [
                 'label' => 'Votre prénom',
                 'constraints' => new Length([
                     'min' => 2,
@@ -28,16 +28,7 @@ class RegisterType extends AbstractType
                     'placeholder' => 'Merci de saisir votre Prénom'
                 ]
             ])
-            ->add('lastname', TextType::class, [
-                'label' => 'Votre nom',
-                'constraints' => new Length([
-                    'min' => 2,
-                    'max' => 30
-                ]),
-                'attr' =>[
-                    'placeholder' => 'Merci de saisir votre nom'
-                ]
-            ])
+          
             ->add('email', EmailType::class, [
                 'label' => 'Votre email',
                 'constraints' => new Length([
