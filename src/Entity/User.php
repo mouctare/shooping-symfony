@@ -7,10 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity("email")
  */
+
 class User implements UserInterface
 {
     /**
@@ -22,6 +26,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     *  @Assert\NotBlank(message="L'email doit etre renseigné ! ")
+     *  @Assert\Email(message="L' adresse email doit avoir un format valide ! ")
      */
     private $email;
 
@@ -33,11 +39,19 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Le mot de passe  obligatoire")
+     * @Assert\Length(min=3, minMessage="Le mot de passe doit faire entre 8  et 12 caractères", max=255,
+     * maxMessage="Le mot de passe 8  et 10 caractères")
+     *
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le prénom  de l'agent est obligatoire")
+     * @Assert\Length(min=3, minMessage="Le prénom doit faire entre 3  et 255 caractères", max=255,
+     * maxMessage="Le prénom doit faire entre 3  et 255 caractères")
+     *  
      */
     private $fullName;
 

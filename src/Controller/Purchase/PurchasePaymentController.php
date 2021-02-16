@@ -24,20 +24,14 @@ public function showCardForm($id, PurchaseRepository $purchaseRepository, Stripe
 
     }
 
-//     \Stripe\Stripe::setApiKey('sk_test_51IFzX1LidspSVr1ROWWc9Yeh31vrMAB9j6CnTIsI2Z77ICEbuWyqb1NbsiNWIGJzGyzBEfDJnMQfkS5G4kZzZaqq00sZxpzhd2');
-//   $intent =  \Stripe\PaymentIntent::create([
-//         'amount' => $purchase->getTotal(),
-//         'currency' => 'eur'
 
-//     ]);
-//    // dd($intent->client_secret);
 
- $intent = $stripeService->getPayementIntent($purchase);
+ //$intent = $stripeService->getPayementIntent($purchase);
 
  // Je remplace cette ligne par le service que j'ai cré
 
     return $this->render('purchase/payment.html.twig', [
-        'clientSecret' => $intent->client_secret,
+      //  'clientSecret' => $intent->client_secret,
         'purchase' => $purchase,
         'stripPublicKey'=> $stripeService->getPublicKey()
     ]);
